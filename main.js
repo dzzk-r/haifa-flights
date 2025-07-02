@@ -56,7 +56,7 @@ function initMap() {
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
       position: google.maps.ControlPosition.TOP_RIGHT
-    }
+    },  
   });
 
   const runwayCoords = [

@@ -75,18 +75,20 @@ function initMap() {
     map
   });
 
-  const groupSelect = document.getElementById("groupSelect");
+  // const groupSelect = document.getElementById("groupSelect");
+  const categorySelect = document.getElementById("categorySelect");
+
   Object.keys(aircraftGroups).forEach(group => {
     const opt = document.createElement("option");
     opt.value = group;
     opt.textContent = group;
-    groupSelect.appendChild(opt);
+    categorySelect.appendChild(opt);
   });
 
   groupSelect.addEventListener("change", () => {
-    populateAircraftSelect(groupSelect.value);
+    populateAircraftSelect(categorySelect.value);
   });
-  populateAircraftSelect(groupSelect.value);
+  populateAircraftSelect(categorySelect.value);
 
   ["aircraftSelect", "tempSlider", "windSlider", "loadSelect", "customRunway"].forEach(id => {
     document.getElementById(id).addEventListener("input", updateResult);
@@ -142,17 +144,17 @@ function drawRangeCircle(rangeKm, canOperateNow) {
   if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
 }
 
-(function addGoogleMapsScript() {
-  const GMAP_API = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE";
-  const key = "{{GMAP_API}}";
-  if (!key || key.includes("{{")) {
-    console.error("Google Maps API key not injected.");
-    return;
-  }
+// (function addGoogleMapsScript() {
+//   const GMAP_API = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE";
+//   const key = "{{GMAP_API}}";
+//   if (!key || key.includes("{{")) {
+//     console.error("Google Maps API key not injected.");
+//     return;
+//   }
 
-  const s = document.createElement("script");
-  s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
-  s.async = true;
-  s.defer = true;
-  document.head.appendChild(s);
-})();
+//   const s = document.createElement("script");
+//   s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
+//   s.async = true;
+//   s.defer = true;
+//   document.head.appendChild(s);
+// })();

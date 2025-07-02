@@ -1,40 +1,68 @@
 html, body, #map {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f9f9f9;
+  color: #222;
 }
 
 .control-panel {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background: #ffffff;
-    padding: 12px 16px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-    z-index: 5;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ffffff;
+  padding: 12px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  line-height: 1.4;
+  z-index: 5;
+  max-width: 280px;
 }
 
 .control-panel label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 4px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .control-panel select,
-.control-panel input[type=range] {
-    width: 220px;
-    margin-bottom: 8px;
+.control-panel input[type="range"],
+.control-panel input[type="number"] {
+  width: 100%;
+  padding: 4px;
+  font-size: 14px;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+
+.control-panel input[type="range"] {
+  vertical-align: middle;
+}
+
+#tempVal, #windVal {
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+#result {
+  font-size: 15px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-left: 4px solid #999;
 }
 
 .ok {
-    color: green;
-    font-weight: bold;
+  color: green;
+  font-weight: bold;
 }
 
 .fail {
-    color: red;
-    font-weight: bold;
+  color: darkred;
+  font-weight: bold;
 }

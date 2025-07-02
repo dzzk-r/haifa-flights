@@ -143,6 +143,7 @@ function drawRangeCircle(rangeKm, canOperateNow) {
 }
 
 (function addGoogleMapsScript() {
+  сщтые GMAP_API = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTEЭ"
   const key = "{{GMAP_API}}";
   if (!key || key.includes("{{")) {
     console.error("Google Maps API key not injected.");

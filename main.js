@@ -1,21 +1,28 @@
-/**
- * === Константы и данные ===
- */
-const aircraftData = {
-  "ATR 72-600": { takeoff: 1315, range: 1500 },
-  "Embraer E175 (MTOW)": { takeoff: 1724, range: 3700 },
-  "Boeing 737-800": { takeoff: 2316, range: 5436 },
-  "Airbus A320-200": { takeoff: 2000, range: 6100 },
-  "Embraer E195-E2": { takeoff: 2110, range: 4800 },
-  "ATR 42-500": { takeoff: 1050, range: 1100 },
-  "Gulfstream G600": { takeoff: 1795, range: 12000 },
+// === main.js ===
+
+const aircraftGroups = {
+  "Бизнес-джеты": {
+    "Gulfstream G600":        { takeoff: 1795, range: 12000 },
+    "Dassault Falcon 8X":     { takeoff: 1790, range: 12000 },
+    "Cessna Citation CJ4":    { takeoff: 970,  range: 3700 }
+  },
+  "Турбовинтовые региональные": {
+    "ATR 42-500":             { takeoff: 1050, range: 1100 },
+    "ATR 72-600":             { takeoff: 1315, range: 1500 },
+    "Dash 8 Q400":            { takeoff: 1390, range: 2000 }
+  },
+  "Региональные реактивные": {
+    "Embraer E175 (MTOW)":    { takeoff: 1724, range: 3700 },
+    "Embraer E195-E2":        { takeoff: 2110, range: 4800 }
+  },
+  "Магистральные узкофюзеляжные": {
+    "Airbus A320-200":        { takeoff: 2000, range: 6100 },
+    "Boeing 737-800":         { takeoff: 2316, range: 5436 }
+  }
 };
 
 let map, rangeCircle;
 
-/**
- * === Получение текущей длины ВПП (выбор или ручной ввод) ===
- */
 function getRunwayLength() {
   const selected = document.querySelector('input[name="runway"]:checked').value;
   if (selected === "custom") {
@@ -25,16 +32,25 @@ function getRunwayLength() {
   return parseInt(selected, 10);
 }
 
-/**
- * === Call‑back для Google Maps API ===
- */
+function populateAircraftSelect(groupName) {
+  const aircraftSelect = document.getElementById("aircraftSelect");
+  aircraftSelect.innerHTML = "";
+  const group = aircraftGroups[groupName];
+  for (const model in group) {
+    const opt = document.createElement("option");
+    opt.value = model;
+    opt.textContent = model;
+    aircraftSelect.appendChild(opt);
+  }
+  updateResult();
+}
+
 function initMap() {
   const airportCenter = { lat: 32.8145, lng: 35.0432 };
-
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
     zoom: 6,
-    mapTypeId: "hybrid", // начнем со спутника
+    mapTypeId: "hybrid",
     disableDefaultUI: false,
     mapTypeControl: true,
     mapTypeControlOptions: {
@@ -43,14 +59,12 @@ function initMap() {
     }
   });
 
-  // Прямоугольник приблизительного контура ВПП
   const runwayCoords = [
     { lat: 32.81702, lng: 35.04190 },
     { lat: 32.81756, lng: 35.04285 },
     { lat: 32.81187, lng: 35.04444 },
     { lat: 32.81132, lng: 35.04346 }
   ];
-
   new google.maps.Polygon({
     paths: runwayCoords,
     strokeColor: "#FF0000",
@@ -61,60 +75,46 @@ function initMap() {
     map
   });
 
-  // Рендер списка самолётов
-  const select = document.getElementById("aircraftSelect");
-  Object.keys(aircraftData).forEach(ac => {
+  const groupSelect = document.getElementById("groupSelect");
+  Object.keys(aircraftGroups).forEach(group => {
     const opt = document.createElement("option");
-    opt.value = ac;
-    opt.textContent = ac;
-    select.appendChild(opt);
+    opt.value = group;
+    opt.textContent = group;
+    groupSelect.appendChild(opt);
   });
 
-  select.addEventListener("change", updateResult);
-  ["tempSlider", "windSlider", "loadSelect"].forEach(id => {
-    document.getElementById(id).addEventListener("input", () => {
-      document.getElementById("tempValue").textContent = document.getElementById("tempSlider").value;
-      document.getElementById("windValue").textContent = document.getElementById("windSlider").value;
-      updateResult();
-    });
+  groupSelect.addEventListener("change", () => {
+    populateAircraftSelect(groupSelect.value);
   });
+  populateAircraftSelect(groupSelect.value);
 
+  ["aircraftSelect", "tempSlider", "windSlider", "loadSelect", "customRunway"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateResult);
+  });
   document.querySelectorAll('input[name="runway"]').forEach(r => {
     r.addEventListener("change", () => {
       document.getElementById("customRunway").disabled = r.value !== "custom";
       updateResult();
     });
   });
-
-  document.getElementById("customRunway").addEventListener("input", updateResult);
-
-  // Авторасчёт при старте
-  updateResult();
 }
 
-/**
- * === Обновляет результат и рисует круг ===
- */
 function updateResult() {
+  const group = document.getElementById("groupSelect").value;
   const ac = document.getElementById("aircraftSelect").value;
-  const { takeoff, range } = aircraftData[ac];
+  const { takeoff, range } = aircraftGroups[group][ac];
 
   const temp = parseInt(document.getElementById("tempSlider").value);
   const wind = parseInt(document.getElementById("windSlider").value);
   const load = parseFloat(document.getElementById("loadSelect").value);
-  const runwayLength = getRunwayLength();
 
-  // Поправка на температуру
   const tempPenalty = Math.max(0, temp - 15) * 0.01 / 3;
   const takeoffAdjusted = takeoff * (1 + tempPenalty);
-
-  // Поправка на ветер
   const windFactor = wind * 0.01 / 2;
   const takeoffFinal = takeoffAdjusted * (1 - windFactor);
-
-  // Реальная дальность
   const rangeFinal = Math.round(range * load);
 
+  const runwayLength = getRunwayLength();
   const delta = Math.round(takeoffFinal - runwayLength);
   const resEl = document.getElementById("result");
 
@@ -127,12 +127,8 @@ function updateResult() {
   drawRangeCircle(rangeFinal, delta <= 0);
 }
 
-/**
- * === Отрисовка круга радиуса дальности ===
- */
 function drawRangeCircle(rangeKm, canOperateNow) {
-  if (rangeCircle) rangeCircle.setMap(null); // удалить предыдущий
-
+  if (rangeCircle) rangeCircle.setMap(null);
   rangeCircle = new google.maps.Circle({
     strokeColor: canOperateNow ? "#00AA00" : "#FF0000",
     strokeOpacity: 0.6,
@@ -143,6 +139,18 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     radius: rangeKm * 1000,
     map
   });
-
   if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
 }
+
+(function addGoogleMapsScript() {
+  const key = "{{GMAP_API}}";
+  if (!key || key.includes("{{")) {
+    console.error("Google Maps API key not injected.");
+    return;
+  }
+  const s = document.createElement("script");
+  s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
+  s.async = true;
+  s.defer = true;
+  document.head.appendChild(s);
+})();

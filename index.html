@@ -5,7 +5,11 @@
   <title>Haifa Runway Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html, body, #map { height: 100%; margin: 0; padding: 0; }
+    html, body, #map {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
     .control-panel {
       position: absolute;
       top: 10px;
@@ -18,23 +22,40 @@
       line-height: 1.4;
       z-index: 5;
     }
-    .control-panel label { font-weight: bold; display: block; margin-bottom: 4px; }
-    .control-panel select, .control-panel input[type=range] { width: 220px; margin-bottom: 8px; }
-    .ok { color: green; font-weight: bold; }
-    .fail { color: red; font-weight: bold; }
+    .control-panel label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .control-panel select,
+    .control-panel input[type=range] {
+      width: 220px;
+      margin-bottom: 8px;
+    }
+    .ok {
+      color: green;
+      font-weight: bold;
+    }
+    .fail {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
   <div class="control-panel">
-    <label for="aircraftSelect">Выберите самолёт:</label>
+    <label for="categorySelect">Категория:</label>
+    <select id="categorySelect"></select>
+
+    <label for="aircraftSelect">Самолёт:</label>
     <select id="aircraftSelect"></select>
 
     <label for="tempSlider">Температура (°C): <span id="tempValue">15</span></label>
-    <input type="range" id="tempSlider" min="15" max="45" value="15" step="1">
+    <input type="range" id="tempSlider" min="15" max="45" value="15" step="1" />
 
     <label for="windSlider">Ветер (узлы): <span id="windValue">0</span></label>
-    <input type="range" id="windSlider" min="-20" max="20" value="0" step="1">
+    <input type="range" id="windSlider" min="-20" max="20" value="0" step="1" />
 
     <label for="loadSelect">Загрузка:</label>
     <select id="loadSelect">
@@ -56,7 +77,7 @@
     <div id="result"></div>
   </div>
 
-  <!-- Загружаем Google Maps API + подключаем main.js -->
+  <!-- === Загружаем Google Maps API и подключаем main.js === -->
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE&libraries=geometry&callback=initMap">
   </script>

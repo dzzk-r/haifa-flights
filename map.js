@@ -15,7 +15,8 @@ export function initMap(callbackOnReady) {
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
     zoom: 6,
-    mapTypeId: "hybrid",
+//    mapTypeId: "hybrid",
+    mapTypeId: "roadmap",
     disableDefaultUI: false,
     mapTypeControl: true,
     mapTypeControlOptions: {

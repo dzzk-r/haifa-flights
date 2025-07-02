@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Haifa Runway Calculator</title>
+    <!-- Replace YOUR_API_KEY with your actual Google Maps JS API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry"></script>
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .control-panel {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ffffff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.4;
+        }
+
+        .control-panel label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .control-panel select {
+            width: 220px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div class="control-panel">
+        <label for="aircraftSelect">Выберите самолёт:</label>
+        <select id="aircraftSelect"></select>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Текущая длина ВПП Хайфы (полоса 15/33) в метрах
+        const RUNWAY_LENGTH_M = 1318; // источник: Wikipedia, июль 2025
+
+        // Требования к длине разбега/взлёта самолётов (метры; ISA, уровень моря, MTOW если не указано иное)
+        // При желании расширьте список или храните его во внешнем JSON‑файле/БД
+        const aircraftData = {
+            "ATR 72‑600": 1315,
+            "Embraer E175 (MTOW)": 1724,
+            "Boeing 737‑800": 2316,
+            "Airbus A320‑200": 2000
+        };
+
+        function initMap() {
+            // Центр карты – примерно середина ВПП
+            const airportCenter = { lat: 32.8145, lng: 35.0432 };
+
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: airportCenter,
+                zoom: 15,
+                mapTypeId: "satellite",
+                tilt: 0
+            });
+
+            // Приблизительный контур ВПП (четыре угла прямоугольника)
+            const runwayCoords = [
+                { lat: 32.81702, lng: 35.04190 },
+                { lat: 32.81756, lng: 35.04285 },
+                { lat: 32.81187, lng: 35.04444 },
+                { lat: 32.81132, lng: 35.04346 }
+            ];
+
+            new google.maps.Polygon({
+                paths: runwayCoords,
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                map
+            });
+
+            // Заполняем выпадающий список
+            const select = document.getElementById("aircraftSelect");
+            Object.keys(aircraftData).forEach(ac => {
+                const opt = document.createElement("option");
+                opt.value = ac;
+                opt.textContent = ac;
+                select.appendChild(opt);
+            });
+
+            // Слушатель выбора
+            select.addEventListener("change", update);
+            update(); // начальный расчёт
+        }
+
+        function update() {
+            const ac = document.getElementById("aircraftSelect").value;
+            const needed = aircraftData[ac];
+            const delta = needed - RUNWAY_LENGTH_M;
+            const resEl = document.getElementById("result");
+
+            if (delta <= 0) {
+                resEl.textContent = `✔ Полоса подходит (запас ${Math.abs(delta)} м)`;
+            } else {
+                resEl.textContent = `✘ Не хватает ${delta} м; требуется ≥ ${needed} м`;
+            }
+        }
+
+        // Экспортируем инициализацию для callback Google Maps
+        window.initMap = initMap;
+    </script>
+</body>
+
+</html>

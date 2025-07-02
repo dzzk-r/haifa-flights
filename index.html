@@ -54,9 +54,14 @@
 
     map = new google.maps.Map(document.getElementById("map"), {
       center: airportCenter,
-      zoom: 15,
-      mapTypeId: "satellite",
-      disableDefaultUI: true
+      zoom: 6,
+      mapTypeId: "hybrid", // начнем со спутника
+      disableDefaultUI: false,
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        position: google.maps.ControlPosition.TOP_RIGHT
+      }
     });
 
     // Прямоугольник приблизительного контура ВПП

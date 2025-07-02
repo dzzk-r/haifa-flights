@@ -1,4 +1,5 @@
 // === main.js ===
+import { initMap, drawRangeCircle } from './map.js';
 
 const aircraftGroups = {
   "Бизнес-джеты": {
@@ -21,8 +22,6 @@ const aircraftGroups = {
   }
 };
 
-let map, rangeCircle;
-
 function getRunwayLength() {
   const selected = document.querySelector('input[name="runway"]:checked').value;
   if (selected === "custom") {
@@ -43,63 +42,6 @@ function populateAircraftSelect(groupName) {
     aircraftSelect.appendChild(opt);
   }
   updateResult();
-}
-
-function initMap() {
-  const airportCenter = { lat: 32.8145, lng: 35.0432 };
-  map = new google.maps.Map(document.getElementById("map"), {
-    center: airportCenter,
-    zoom: 6,
-    mapTypeId: "hybrid",
-    disableDefaultUI: false,
-    mapTypeControl: true,
-    mapTypeControlOptions: {
-      style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-      position: google.maps.ControlPosition.TOP_RIGHT
-    }
-  });
-
-  const runwayCoords = [
-    { lat: 32.81702, lng: 35.04190 },
-    { lat: 32.81756, lng: 35.04285 },
-    { lat: 32.81187, lng: 35.04444 },
-    { lat: 32.81132, lng: 35.04346 }
-  ];
-  new google.maps.Polygon({
-    paths: runwayCoords,
-    strokeColor: "#FF0000",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: "#FF0000",
-    fillOpacity: 0.35,
-    map
-  });
-
-  const categorySelect = document.getElementById("categorySelect");
-
-  Object.keys(aircraftGroups).forEach(group => {
-    const opt = document.createElement("option");
-    opt.value = group;
-    opt.textContent = group;
-    categorySelect.appendChild(opt);
-  });
-
-  categorySelect.addEventListener("change", () => {
-    populateAircraftSelect(categorySelect.value);
-  });
-
-  populateAircraftSelect(categorySelect.value);
-
-  ["aircraftSelect", "tempSlider", "windSlider", "loadSelect", "customRunway"].forEach(id => {
-    document.getElementById(id).addEventListener("input", updateResult);
-  });
-
-  document.querySelectorAll('input[name="runway"]').forEach(r => {
-    r.addEventListener("change", () => {
-      document.getElementById("customRunway").disabled = r.value !== "custom";
-      updateResult();
-    });
-  });
 }
 
 function updateResult() {
@@ -130,17 +72,32 @@ function updateResult() {
   drawRangeCircle(rangeFinal, delta <= 0);
 }
 
-function drawRangeCircle(rangeKm, canOperateNow) {
-  if (rangeCircle) rangeCircle.setMap(null);
-  rangeCircle = new google.maps.Circle({
-    strokeColor: canOperateNow ? "#00AA00" : "#FF0000",
-    strokeOpacity: 0.6,
-    strokeWeight: 2,
-    fillColor: canOperateNow ? "#00AA00" : "#FF0000",
-    fillOpacity: 0.06,
-    center: { lat: 32.8145, lng: 35.0432 },
-    radius: rangeKm * 1000,
-    map
+// === Запуск после загрузки карты ===
+window.initMap = () => {
+  initMap(() => {
+    const categorySelect = document.getElementById("categorySelect");
+    Object.keys(aircraftGroups).forEach(group => {
+      const opt = document.createElement("option");
+      opt.value = group;
+      opt.textContent = group;
+      categorySelect.appendChild(opt);
+    });
+
+    categorySelect.addEventListener("change", () => {
+      populateAircraftSelect(categorySelect.value);
+    });
+
+    populateAircraftSelect(categorySelect.value);
+
+    ["aircraftSelect", "tempSlider", "windSlider", "loadSelect", "customRunway"].forEach(id => {
+      document.getElementById(id).addEventListener("input", updateResult);
+    });
+
+    document.querySelectorAll('input[name="runway"]').forEach(r => {
+      r.addEventListener("change", () => {
+        document.getElementById("customRunway").disabled = r.value !== "custom";
+        updateResult();
+      });
+    });
   });
-  if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
-}
+};

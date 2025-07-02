@@ -100,25 +100,25 @@
     if (delta <= 0) {
       resEl.innerHTML = `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м)`;
     } else {
-      resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${needed} м`;
+      resEl.innerHTML = `✘ <span class="fail">Не хватает  м</span>; нужно ≥  м`;
     }
   }
 
   /**
    * === Загружаем Google Maps API динамически, чтобы ключ подтягивался из переменной окружения ===
-   * Codespaces при запуске "preview" / "live server" может заменить AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE на значение
+   * Codespaces при запуске "preview" / "live server" может заменить {{GMAP_API}} на значение
    * секрета. Например:
-   *    sed -e "s/AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE/$GMAP_API/g" haifa-runway-calculator.html > dist/index.html
+   *    sed -e "s/{{GMAP_API}}/AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE/g" haifa-runway-calculator.html > dist/index.html
    * или используйте Express/EJS, чтобы сервер рендерил этот шаблон.
    */
   (function addGoogleMapsScript() {
-    const key = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE"; // токен‑заглушка, который будет подменён на реальный ключ
+    const key = "{{GMAP_API}}"; // токен‑заглушка, который будет подменён на реальный ключ
     if (!key || key.includes("{{")) {
-      console.error("Google Maps API key not injected. Make sure AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE is replaced at build/runtime.");
+      console.error("Google Maps API key not injected. Make sure {{GMAP_API}} is replaced at build/runtime.");
       return;
     }
     const s = document.createElement("script");
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
+    s.src = `https://maps.googleapis.com/maps/api/js?key=&libraries=geometry&callback=initMap`;
     s.async = true;
     s.defer = true;
     document.head.appendChild(s);

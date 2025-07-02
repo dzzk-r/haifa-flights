@@ -114,7 +114,7 @@ function updateAircraftInfo(group, model) {
   if (!group || !model) return (infoEl.textContent = "");
   const aircraft = aircraftGroups[group][model];
   if (!aircraft) return (infoEl.textContent = "");
-  infoEl.innerHTML = `✈️ Взлётная дистанция: ${aircraft.takeoff} м<br>📏 Дальность: ${aircraft.range} км`;
+//  infoEl.innerHTML = `✈️ Взлётная дистанция: ${aircraft.takeoff} м<br>📏 Дальность: ${aircraft.range} км`;
 }
 
 // Сделать initMap глобальной

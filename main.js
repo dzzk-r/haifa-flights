@@ -18,14 +18,14 @@ const aircraftGroups = {
     "Boeing 737-800": { takeoff: 2316, range: 5436 }
   },
   "STOL и лёгкие региональные": {
-    "Pilatus PC-12":            { takeoff: 793,  range: 3400 },
-    "Viking DHC-6 Twin Otter":  { takeoff: 366,  range: 1400 },
-    "Cessna 208 Caravan":       { takeoff: 660,  range: 1900 },
-    "Beechcraft King Air 350":  { takeoff: 1006, range: 3300 },
-    "Let L-410 Turbolet":       { takeoff: 610,  range: 1500 },
-    "Cessna 408 SkyCourier":    { takeoff: 1100, range: 1600 },
     "Learjet 75 Liberty":       { takeoff: 1260, range: 3800 },
-    "HondaJet HA-420":          { takeoff: 1050, range: 2200 }
+    "Pilatus PC-12":            { takeoff: 793,  range: 3400 },
+    "Beechcraft King Air 350":  { takeoff: 1006, range: 3300 },
+    "HondaJet HA-420":          { takeoff: 1050, range: 2200 },
+    "Cessna 208 Caravan":       { takeoff: 660,  range: 1900 },
+    "Cessna 408 SkyCourier":    { takeoff: 1100, range: 1600 },
+    "Let L-410 Turbolet":       { takeoff: 610,  range: 1500 },
+    "Viking DHC-6 Twin Otter":  { takeoff: 366,  range: 1400 },
   },
 };
 

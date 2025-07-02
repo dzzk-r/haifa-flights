@@ -55,9 +55,13 @@ function populateAircraftSelect(groupName) {
 }
 
 function updateResult() {
-  const group = document.getElementById("groupSelect").value;
+  const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
-  const { takeoff, range, capacity, cruise } = aircraftGroups[group][ac];
+  const data = aircraftGroups[group][ac];
+
+  if (!data) return;
+
+  const { takeoff, range, capacity, cruise } = data;
 
   const temp = parseInt(document.getElementById("tempSlider").value);
   const wind = parseInt(document.getElementById("windSlider").value);
@@ -71,22 +75,21 @@ function updateResult() {
 
   const runwayLength = getRunwayLength();
   const delta = Math.round(takeoffFinal - runwayLength);
+
   const resEl = document.getElementById("result");
 
-  let resultText = `
-    ✈️ <strong>${ac}</strong><br>
-    👥 Вместимость: ${capacity} пассажиров<br>
-    🕓 Крейсерская скорость: ${cruise} км/ч<br><br>
+  resEl.innerHTML = `
+    <strong>${ac}</strong><br>
+    👥 Вместимость: ${capacity || "?"} чел<br>
+    ✈️ Взлётная дистанция: ${Math.round(takeoffFinal)} м<br>
+    📏 Дальность: ${rangeFinal} км<br>
+    🚀 Крейсерская скорость: ${cruise || "?"} км/ч<br><br>
+    ${
+      delta <= 0
+        ? `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м).`
+        : `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${Math.round(takeoffFinal)} м.`
+    }
   `;
-
-  if (delta <= 0) {
-    resultText += `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м).<br>`;
-  } else {
-    resultText += `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${Math.round(takeoffFinal)} м.<br>`;
-  }
-
-  resultText += `📡 Дальность ≈ ${rangeFinal} км.`;
-  resEl.innerHTML = resultText;
 
   drawRangeCircle(rangeFinal, delta <= 0);
 }

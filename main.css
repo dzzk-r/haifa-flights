@@ -115,3 +115,15 @@ html, body {
   color: red;
   font-weight: bold;
 }
+
+#aircraftInfo {
+    margin-bottom: 10px; 
+    font-size: 14px;
+}
+
+#aircraftImage {
+    display:none; 
+    max-width: 100%; 
+    border-radius: 8px; 
+    margin-top: 10px;
+}

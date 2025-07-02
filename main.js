@@ -69,6 +69,12 @@ function updateResult() {
     resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${Math.round(takeoffFinal)} м.<br>После удлинения: дальность ≈ ${rangeFinal} км.`;
   }
 
+  const image = document.getElementById("aircraftImage");
+  const imageName = ac.replace(/[ ()]/g, "_") + ".jpg";
+  image.src = `img/aircraft/${imageName}`;
+  image.alt = ac;
+  image.style.display = "block";
+
   drawRangeCircle(rangeFinal, delta <= 0);
 }
 

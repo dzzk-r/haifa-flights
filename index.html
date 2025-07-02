@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <title>Haifa Runway Calculator</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script type="module" src="./main.js"></script>
-  <link rel="stylesheet" href="main.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Взлет с Хайфы</title>
+  <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <div id="map"></div>
-  <div class="control-panel">
-    <label for="categorySelect">Категория:</label>
-    <select id="categorySelect"></select>
+  <h1>Проверка самолёта для Хайфы</h1>
 
-    <label for="aircraftSelect">Самолёт:</label>
-    <select id="aircraftSelect"></select>
+  <label for="categorySelect">Категория:</label>
+  <select id="categorySelect"></select>
 
-    <label for="tempSlider">Температура (°C): <span id="tempValue">15</span></label>
-    <input type="range" id="tempSlider" min="15" max="45" value="15" step="1" />
+  <label for="aircraftSelect">Самолёт:</label>
+  <select id="aircraftSelect"></select>
 
-    <label for="windSlider">Ветер (узлы): <span id="windValue">0</span></label>
-    <input type="range" id="windSlider" min="-20" max="20" value="0" step="1" />
-
-    <label for="loadSelect">Загрузка:</label>
+  <p>
+    Температура воздуха: <input type="range" id="tempSlider" min="0" max="50" value="15" />
+    <span id="tempVal">15°C</span>
+  </p>
+  <p>
+    Ветер (в спину): <input type="range" id="windSlider" min="0" max="30" value="0" />
+    <span id="windVal">0 км/ч</span>
+  </p>
+  <p>
+    Загрузка: 
     <select id="loadSelect">
-      <option value="0.7">70% (лёгкая)</option>
-      <option value="0.85" selected>85% (средняя)</option>
-      <option value="1.0">100% (макс)</option>
+      <option value="1.0">100%</option>
+      <option value="0.9">90%</option>
+      <option value="0.8">80%</option>
     </select>
+  </p>
 
-    <label>Длина ВПП:</label>
-    <div>
-      <label><input type="radio" name="runway" value="1318" checked /> Текущая (1318 м)</label><br />
-      <label><input type="radio" name="runway" value="2000" /> Расширенная (2000 м)</label><br />
-      <label>
-        <input type="radio" name="runway" value="custom" /> Ввести свою:
-        <input type="number" id="customRunway" placeholder="метры" style="width: 100px;" disabled />
-      </label>
-    </div>
+  <p>
+    Длина полосы: <br />
+    <label><input type="radio" name="runway" value="1260" checked /> 1260 м (текущая)</label>
+    <label><input type="radio" name="runway" value="1500" /> 1500 м</label>
+    <label><input type="radio" name="runway" value="2000" /> 2000 м</label>
+    <label><input type="radio" name="runway" value="custom" /> Другая:</label>
+    <input type="number" id="customRunway" disabled placeholder="Введите длину (м)" />
+  </p>
 
-    <div id="result"></div>
-  </div>
+  <div id="result"></div>
+  <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
 
-  <!-- === Загружаем Google Maps API и подключаем main.js === -->
-  <script async defer
+  <!-- Подключение JavaScript -->
+  <script src="main.js"></script>
+  <script
+    async
+    defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE&libraries=geometry&callback=initMap">
   </script>
-  <script src="main.js"></script>
 </body>
 </html>

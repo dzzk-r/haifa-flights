@@ -40,6 +40,7 @@ function populateAircraftSelect(groupName) {
     opt.textContent = model;
     aircraftSelect.appendChild(opt);
   }
+  updateAircraftInfo(groupName, aircraftSelect.value);
   updateResult();
 }
 
@@ -84,6 +85,14 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     map
   });
   if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
+}
+
+function updateAircraftInfo(group, model) {
+  const infoEl = document.getElementById("aircraftInfo");
+  if (!group || !model) return (infoEl.textContent = "");
+  const aircraft = aircraftGroups[group][model];
+  if (!aircraft) return (infoEl.textContent = "");
+  infoEl.innerHTML = `✈️ Взлётная дистанция: ${aircraft.takeoff} м<br>📏 Дальность: ${aircraft.range} км`;
 }
 
 // Сделать initMap глобальной
@@ -147,5 +156,10 @@ window.initMap = function () {
   });
   document.getElementById("windSlider").addEventListener("input", (e) => {
     document.getElementById("windVal").textContent = `${e.target.value} км/ч`;
+  });
+
+  document.getElementById("aircraftSelect").addEventListener("change", () => {
+    updateAircraftInfo(categorySelect.value, aircraftSelect.value);
+    updateResult();
   });
 };

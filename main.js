@@ -76,6 +76,7 @@ function initMap() {
   });
 
   const categorySelect = document.getElementById("categorySelect");
+
   Object.keys(aircraftGroups).forEach(group => {
     const opt = document.createElement("option");
     opt.value = group;
@@ -104,9 +105,8 @@ function initMap() {
 function updateResult() {
   const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
-  if (!group || !ac || !aircraftGroups[group]?.[ac]) return;
-
   const { takeoff, range } = aircraftGroups[group][ac];
+
   const temp = parseInt(document.getElementById("tempSlider").value);
   const wind = parseInt(document.getElementById("windSlider").value);
   const load = parseFloat(document.getElementById("loadSelect").value);

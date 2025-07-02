@@ -29,6 +29,18 @@
   <div class="control-panel">
     <label for="aircraftSelect">Выберите самолёт:</label>
     <select id="aircraftSelect"></select>
+    <label for="tempSlider">Температура (°C): <span id="tempValue">15</span></label>
+    <input type="range" id="tempSlider" min="15" max="45" value="15" step="1">
+
+    <label for="windSlider">Ветер (узлы): <span id="windValue">0</span></label>
+    <input type="range" id="windSlider" min="-20" max="20" value="0" step="1">
+
+    <label for="loadSelect">Загрузка:</label>
+    <select id="loadSelect">
+      <option value="0.7">70% (лёгкая)</option>
+      <option value="0.85" selected>85% (средняя)</option>
+      <option value="1.0">100% (макс)</option>
+    </select>
     <div id="result"></div>
   </div>
 
@@ -41,7 +53,10 @@
     "ATR 72-600": { takeoff: 1315, range: 1500 },
     "Embraer E175 (MTOW)": { takeoff: 1724, range: 3700 },
     "Boeing 737-800": { takeoff: 2316, range: 5436 },
-    "Airbus A320-200": { takeoff: 2000, range: 6100 }
+    "Airbus A320-200": { takeoff: 2000, range: 6100 },
+    "Embraer E195-E2": { takeoff: 2110, range: 4800 },
+    "ATR 42-500": { takeoff: 1050, range: 1100 },
+    "Gulfstream G600": { takeoff: 1795, range: 12000 },
   };
 
   let map, rangeCircle;
@@ -92,7 +107,14 @@
     });
 
     select.addEventListener("change", updateResult);
-    updateResult();
+    ["tempSlider", "windSlider", "loadSelect"].forEach(id => {
+      document.getElementById(id).addEventListener("input", () => {
+        document.getElementById("tempValue").textContent = document.getElementById("tempSlider").value;
+        document.getElementById("windValue").textContent = document.getElementById("windSlider").value;
+        updateResult();
+      });
+    });
+    <!-- updateResult(); -->
   }
 
   /**
@@ -101,16 +123,34 @@
   function updateResult() {
     const ac = document.getElementById("aircraftSelect").value;
     const { takeoff, range } = aircraftData[ac];
-    const delta = takeoff - RUNWAY_LENGTH_M;
+
+    // Получаем значения UI
+    const temp = parseInt(document.getElementById("tempSlider").value);
+    const wind = parseInt(document.getElementById("windSlider").value);
+    const load = parseFloat(document.getElementById("loadSelect").value);
+
+    // 1. Поправка на температуру (1% потери на каждые 3°C >15)
+    const tempPenalty = Math.max(0, temp - 15) * 0.01 / 3;
+    const takeoffAdjusted = takeoff * (1 + tempPenalty);
+
+    // 2. Поправка на ветер (1% улучшение/ухудшение на каждые 2 узла)
+    const windFactor = wind * 0.01 / 2;
+    const takeoffFinal = takeoffAdjusted * (1 - windFactor);
+
+    // 3. Расчёт реальной дальности от загрузки
+    const rangeFinal = Math.round(range * load);
+
+    // 4. Разница по ВПП
+    const delta = Math.round(takeoffFinal - RUNWAY_LENGTH_M);
     const resEl = document.getElementById("result");
 
     if (delta <= 0) {
-      resEl.innerHTML = `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м). Дальность ≈ ${range} км.`;
+      resEl.innerHTML = `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м).<br>Дальность ≈ ${rangeFinal} км.`;
     } else {
-      resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${takeoff} м. Если удлинить ВПП — дальность ≈ ${range} км.`;
+      resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${Math.round(takeoffFinal)} м.<br>После удлинения: дальность ≈ ${rangeFinal} км.`;
     }
 
-    drawRangeCircle(range, delta <= 0);
+    drawRangeCircle(rangeFinal, delta <= 0);
   }
 
   function drawRangeCircle(rangeKm, canOperateNow) {

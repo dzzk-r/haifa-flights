@@ -5,51 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Взлет с Хайфы</title>
   <link rel="stylesheet" href="main.css" />
-</head>
+</head>  
 <body>
   <h1>Проверка самолёта для Хайфы</h1>
+  <div id="map"></div>
 
-  <label for="categorySelect">Категория:</label>
-  <select id="categorySelect"></select>
+  <div class="control-panel">
+    <!-- Все элементы управления -->
+    <label for="categorySelect">Категория:</label>
+    <select id="categorySelect"></select>
 
-  <label for="aircraftSelect">Самолёт:</label>
-  <select id="aircraftSelect"></select>
+    <label for="aircraftSelect">Самолёт:</label>
+    <select id="aircraftSelect"></select>
 
-  <p>
-    Температура воздуха: <input type="range" id="tempSlider" min="0" max="50" value="15" />
-    <span id="tempVal">15°C</span>
-  </p>
-  <p>
-    Ветер (в спину): <input type="range" id="windSlider" min="0" max="30" value="0" />
-    <span id="windVal">0 км/ч</span>
-  </p>
-  <p>
-    Загрузка: 
+    <!-- Дополнительные input-ы: runway, temp, wind, etc. -->
+    <label for="tempSlider">Температура (°C):</label>
+    <input type="range" id="tempSlider" min="0" max="50" value="15">
+    <span id="tempVal">15</span>
+
+    <label for="windSlider">Ветер (узлы):</label>
+    <input type="range" id="windSlider" min="-20" max="20" value="0">
+    <span id="windVal">0</span>
+
+    <label for="loadSelect">Загрузка:</label>
     <select id="loadSelect">
       <option value="1.0">100%</option>
       <option value="0.9">90%</option>
       <option value="0.8">80%</option>
     </select>
-  </p>
 
-  <p>
-    Длина полосы: <br />
-    <label><input type="radio" name="runway" value="1260" checked /> 1260 м (текущая)</label>
-    <label><input type="radio" name="runway" value="1500" /> 1500 м</label>
-    <label><input type="radio" name="runway" value="2000" /> 2000 м</label>
-    <label><input type="radio" name="runway" value="custom" /> Другая:</label>
-    <input type="number" id="customRunway" disabled placeholder="Введите длину (м)" />
-  </p>
+    <label>Длина полосы:</label>
+    <input type="radio" name="runway" value="1200" checked> 1200 м<br>
+    <input type="radio" name="runway" value="1500"> 1500 м<br>
+    <input type="radio" name="runway" value="1800"> 1800 м<br>
+    <input type="radio" name="runway" value="custom"> Своя:
+    <input type="number" id="customRunway" value="2000" disabled> м
 
-  <div id="result"></div>
-  <div id="map" style="height: 500px; width: 100%; margin-top: 20px;"></div>
+    <div id="result"></div>
+  </div>
 
-  <!-- Подключение JavaScript -->
   <script src="main.js"></script>
-  <script
-    async
-    defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE&libraries=geometry&callback=initMap">
-  </script>
 </body>
+
 </html>

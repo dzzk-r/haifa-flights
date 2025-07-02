@@ -56,7 +56,7 @@ function initMap() {
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
       position: google.maps.ControlPosition.TOP_RIGHT
-    },  
+    }
   });
 
   const runwayCoords = [
@@ -75,9 +75,7 @@ function initMap() {
     map
   });
 
-  // const groupSelect = document.getElementById("groupSelect");
   const categorySelect = document.getElementById("categorySelect");
-
   Object.keys(aircraftGroups).forEach(group => {
     const opt = document.createElement("option");
     opt.value = group;
@@ -85,14 +83,16 @@ function initMap() {
     categorySelect.appendChild(opt);
   });
 
-  groupSelect.addEventListener("change", () => {
+  categorySelect.addEventListener("change", () => {
     populateAircraftSelect(categorySelect.value);
   });
+
   populateAircraftSelect(categorySelect.value);
 
   ["aircraftSelect", "tempSlider", "windSlider", "loadSelect", "customRunway"].forEach(id => {
     document.getElementById(id).addEventListener("input", updateResult);
   });
+
   document.querySelectorAll('input[name="runway"]').forEach(r => {
     r.addEventListener("change", () => {
       document.getElementById("customRunway").disabled = r.value !== "custom";
@@ -102,10 +102,11 @@ function initMap() {
 }
 
 function updateResult() {
-  const group = document.getElementById("groupSelect").value;
+  const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
-  const { takeoff, range } = aircraftGroups[group][ac];
+  if (!group || !ac || !aircraftGroups[group]?.[ac]) return;
 
+  const { takeoff, range } = aircraftGroups[group][ac];
   const temp = parseInt(document.getElementById("tempSlider").value);
   const wind = parseInt(document.getElementById("windSlider").value);
   const load = parseFloat(document.getElementById("loadSelect").value);
@@ -143,18 +144,3 @@ function drawRangeCircle(rangeKm, canOperateNow) {
   });
   if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
 }
-
-// (function addGoogleMapsScript() {
-//   const GMAP_API = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE";
-//   const key = "{{GMAP_API}}";
-//   if (!key || key.includes("{{")) {
-//     console.error("Google Maps API key not injected.");
-//     return;
-//   }
-
-//   const s = document.createElement("script");
-//   s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
-//   s.async = true;
-//   s.defer = true;
-//   document.head.appendChild(s);
-// })();

@@ -1,0 +1,25 @@
+# .github/workflows/pages.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]   # или какой ветке доверяешь
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build static site
+        env:
+          GMAP_API: ${{ secrets.GMAP_API }}   # добавь секрет в Settings → Secrets → Actions
+        run: |
+          mkdir -p dist
+          envsubst < haifa-runway-calculator.html > dist/index.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          publish_dir: dist
+          # будет пушить в gh-pages branch автоматически

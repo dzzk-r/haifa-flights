@@ -149,6 +149,7 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     console.error("Google Maps API key not injected.");
     return;
   }
+
   const s = document.createElement("script");
   s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=geometry&callback=initMap`;
   s.async = true;

@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <title>Haifa Runway Calculator</title>
+  <title>Haifa Runway & Range Calculator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     html, body, #map { height: 100%; margin: 0; padding: 0; }
@@ -34,30 +34,32 @@
 
   <script>
   /**
-   * Константы и данные (можно вынести в отдельный JSON)
+   * Данные по ВПП и самолётам
    */
-  const RUNWAY_LENGTH_M = 1318; // Текущая длина ВПП Хайфы, м
+  const RUNWAY_LENGTH_M = 1318; // Хайфа 15/33
+
+  /** aircraftData: { takeoff: м, range: км } */
   const aircraftData = {
-    "ATR 72-600": 1315,
-    "Embraer E175 (MTOW)": 1724,
-    "Boeing 737-800": 2316,
-    "Airbus A320-200": 2000
+    "ATR 72-600": { takeoff: 1315, range: 1500 },
+    "Embraer E175 (MTOW)": { takeoff: 1724, range: 3700 },
+    "Boeing 737-800": { takeoff: 2316, range: 5436 },
+    "Airbus A320-200": { takeoff: 2000, range: 6100 }
   };
 
-  /**
-   * Call‑back для Google Maps API
-   */
+  // глобальные переменные карты / оверлеев
+  let map, runwayOverlay, rangeCircle;
+
   function initMap() {
     const airportCenter = { lat: 32.8145, lng: 35.0432 };
 
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
       center: airportCenter,
-      zoom: 15,
-      mapTypeId: "satellite",
-      disableDefaultUI: true
+      zoom: 5,
+      mapTypeId: "hybrid",
+      disableDefaultUI: false
     });
 
-    // Прямоугольник приблизительного контура ВПП
+    // Контур ВПП — для масштаба
     const runwayCoords = [
       { lat: 32.81702, lng: 35.04190 },
       { lat: 32.81756, lng: 35.04285 },
@@ -65,7 +67,7 @@
       { lat: 32.81132, lng: 35.04346 }
     ];
 
-    new google.maps.Polygon({
+    runwayOverlay = new google.maps.Polygon({
       paths: runwayCoords,
       strokeColor: "#FF0000",
       strokeOpacity: 0.8,
@@ -75,7 +77,7 @@
       map
     });
 
-    // Рендер списка самолётов
+    // Список самолётов
     const select = document.getElementById("aircraftSelect");
     Object.keys(aircraftData).forEach(ac => {
       const opt = document.createElement("option");
@@ -85,36 +87,53 @@
     });
 
     select.addEventListener("change", updateResult);
+
+    // начальный выбор
     updateResult();
   }
 
-  /**
-   * Обновляет результат под выбранный самолёт
-   */
   function updateResult() {
     const ac = document.getElementById("aircraftSelect").value;
-    const needed = aircraftData[ac];
-    const delta = needed - RUNWAY_LENGTH_M;
+    const { takeoff, range } = aircraftData[ac];
+    const delta = takeoff - RUNWAY_LENGTH_M;
     const resEl = document.getElementById("result");
 
+    // Текст результата
     if (delta <= 0) {
-      resEl.innerHTML = `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м)`;
+      resEl.innerHTML = `✔ <span class="ok">Полоса подходит</span> (запас ${Math.abs(delta)} м). Дальность полёта ≈ ${range.toLocaleString()} км.`;
     } else {
-      resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${needed} м`;
+      resEl.innerHTML = `✘ <span class="fail">Не хватает ${delta} м</span>; нужно ≥ ${takeoff} м. <br>Если продлить ВПП, дальность ≈ ${range.toLocaleString()} км.`;
     }
+
+    drawRangeCircle(range, delta <= 0);
+  }
+
+  // Рисуем / обновляем круг дальности
+  function drawRangeCircle(rangeKm, canOperateNow) {
+    if (rangeCircle) rangeCircle.setMap(null);
+
+    rangeCircle = new google.maps.Circle({
+      strokeColor: canOperateNow ? "#00AA00" : "#FF0000",
+      strokeOpacity: 0.6,
+      strokeWeight: 2,
+      fillColor: canOperateNow ? "#00AA00" : "#FF0000",
+      fillOpacity: 0.05,
+      center: { lat: 32.8145, lng: 35.0432 },
+      radius: rangeKm * 1000, // км → м
+      map
+    });
+
+    // подстроить зум под круг, если он большой (радиус > 1600 км)
+    if (rangeKm > 1600) map.fitBounds(rangeCircle.getBounds());
   }
 
   /**
-   * === Загружаем Google Maps API динамически, чтобы ключ подтягивался из переменной окружения ===
-   * Codespaces при запуске "preview" / "live server" может заменить AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE на значение
-   * секрета. Например:
-   *    sed -e "s/AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE/$GMAP_API/g" haifa-runway-calculator.html > dist/index.html
-   * или используйте Express/EJS, чтобы сервер рендерил этот шаблон.
+   * === Динамическая загрузка Google Maps ===
    */
   (function addGoogleMapsScript() {
-    const key = "AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE"; // токен‑заглушка, который будет подменён на реальный ключ
+    const key = "{{GMAP_API}}"; // должен быть заменён build-процессом
     if (!key || key.includes("{{")) {
-      console.error("Google Maps API key not injected. Make sure AIzaSyB2fpfMm2u2wnXJMwj2Flw-vSVJc2xNZTE is replaced at build/runtime.");
+      console.error("Google Maps API key not injected. Make sure {{GMAP_API}} is replaced at build/runtime.");
       return;
     }
     const s = document.createElement("script");

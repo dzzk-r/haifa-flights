@@ -106,7 +106,7 @@ window.initMap = function () {
   const airportCenter = { lat: 32.8145, lng: 35.0432 };
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
-    zoom: 6,
+    zoom: 12,
     mapTypeId: "roadmap", // ⬅ по умолчанию карта, а не спутник
     mapTypeControl: true,
     mapTypeControlOptions: {

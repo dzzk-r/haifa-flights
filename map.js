@@ -49,3 +49,5 @@ export function drawRangeCircle(rangeKm, canOperateNow) {
 export function getMap() {
   return map;
 }
+
+window.initMap = initMap;

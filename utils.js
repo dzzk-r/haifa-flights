@@ -52,10 +52,10 @@ export function logMapDebug(map, rangeCircle, aircraftName, weather, loading, ru
 
 window.logMapDebug = logMapDebug;
 
-
 export function populateAircraftSelects() {
-  const groupSelect = document.getElementById("aircraft-group-select");
-  const modelSelect = document.getElementById("aircraft-model-select");
+    const groupSelect = document.getElementById("aircraft-group-select");
+    const modelSelect = document.getElementById("aircraft-model-select");
+    const categorySelect = document.getElementById("categorySelect");
   
   // populate group select
   for (const group in aircraftData) {
@@ -78,6 +78,6 @@ export function populateAircraftSelects() {
   });
 }
 // // Авто-вызов при загрузке
-// document.addEventListener('DOMContentLoaded', () => {
-//   populateAircraftSelects();
-// });
+document.addEventListener('DOMContentLoaded', () => {
+  populateAircraftSelects();
+});

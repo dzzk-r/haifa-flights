@@ -1,4 +1,4 @@
-const aircraftGroups = {
+export const aircraftGroups = {
   "Бизнес-джеты": {
     "Gulfstream G600":        { takeoff: 1795, range: 12000, capacity: 19, cruise: 903 },
     "Dassault Falcon 8X":     { takeoff: 1790, range: 12000, capacity: 16, cruise: 900 },

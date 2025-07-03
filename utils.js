@@ -47,3 +47,33 @@ export function logMapDebug(map, rangeCircle, aircraftName, weather, loading, ru
   if (loading !== undefined) console.log("📦 Загрузка:", loading);
   if (runwayLength) console.log("🛬 Длина полосы:", runwayLength + " м");
 }
+
+import { aircraftData } from './aircraft-data.js';
+
+export function populateAircraftSelects() {
+  const groupSelect = document.getElementById("aircraft-group-select");
+  const modelSelect = document.getElementById("aircraft-model-select");
+  
+  // populate group select
+  for (const group in aircraftData) {
+    const option = document.createElement("option");
+    option.value = group;
+    option.textContent = group;
+    groupSelect.appendChild(option);
+  }
+
+  // handle group selection change
+  groupSelect.addEventListener("change", () => {
+    const selectedGroup = groupSelect.value;
+    modelSelect.innerHTML = "";
+    for (const model in aircraftData[selectedGroup]) {
+      const option = document.createElement("option");
+      option.value = model;
+      option.textContent = model;
+      modelSelect.appendChild(option);
+    }
+  });
+}
+
+// Авто-вызов при загрузке
+populateAircraftSelects();

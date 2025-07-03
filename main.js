@@ -111,7 +111,9 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     radius: rangeKm * 1000,
     map
   });
-  if (rangeKm > 2000) map.fitBounds(rangeCircle.getBounds());
+  if (rangeKm > 2000 && map.getZoom() < 10) {
+  // Только если зум сильно отдалён и circle большой
+  map.fitBounds(rangeCircle.getBounds());
 }
 
 function updateAircraftInfo(group, model) {

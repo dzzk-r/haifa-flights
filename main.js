@@ -77,12 +77,11 @@ function updateResult() {
   const delta = Math.round(takeoffFinal - runwayLength);
 
   const resEl = document.getElementById("result");
-  const imageName = model.replace(/\s+/g, "_").replace(/[()]/g, "") + ".jpg";
-
+  const imageName = ac.replace(/\s+/g, "_").replace(/[()]/g, "") + ".jpg";
 
   resEl.innerHTML = `
     <strong>${ac}</strong><br>
-    <img src="img/${imageName}" alt="${model}" style="max-width: 100%; max-height: 120px;"><br>
+    <img src="img/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;"><br>
     <br>
 
     👥 Вместимость: ${capacity || "?"} чел<br>

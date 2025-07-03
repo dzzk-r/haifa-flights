@@ -1,4 +1,6 @@
 import { drawRunway } from './runway.js';
+
+
 let map, rangeCircle;
 
 export function initMap() {

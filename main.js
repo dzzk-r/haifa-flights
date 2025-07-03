@@ -58,11 +58,9 @@ function updateResult() {
   const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
   const data = aircraftGroups[group][ac];
-
   if (!data) return;
 
   const { takeoff, range, capacity, cruise } = data;
-
   const temp = parseInt(document.getElementById("tempSlider").value);
   const wind = parseInt(document.getElementById("windSlider").value);
   const load = parseFloat(document.getElementById("loadSelect").value);
@@ -72,7 +70,6 @@ function updateResult() {
   const windFactor = wind * 0.01 / 2;
   const takeoffFinal = takeoffAdjusted * (1 - windFactor);
   const rangeFinal = Math.round(range * load);
-
   const runwayLength = getRunwayLength();
   const delta = Math.round(takeoffFinal - runwayLength);
 
@@ -81,11 +78,8 @@ function updateResult() {
 
   resEl.innerHTML = `
     <strong>${ac}</strong><br>
-    <img src="img/aircraft/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;">
-    <br><br>
-
+    <img src="img/aircraft/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;"><br><br>
     👥 Вместимость: ${capacity || "?"} чел<br>
-    <br>
     ✈️ Взлётная дистанция: ${Math.round(takeoffFinal)} м<br>
     📏 Дальность: ${rangeFinal} км<br>
     🚀 Крейсерская скорость: ${cruise || "?"} км/ч<br><br>
@@ -111,9 +105,10 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     radius: rangeKm * 1000,
     map
   });
+
   if (rangeKm > 2000 && map.getZoom() < 10) {
-  // Только если зум сильно отдалён и circle большой
-  map.fitBounds(rangeCircle.getBounds());
+    map.fitBounds(rangeCircle.getBounds());
+  }
 }
 
 function updateAircraftInfo(group, model) {
@@ -121,16 +116,16 @@ function updateAircraftInfo(group, model) {
   if (!group || !model) return (infoEl.textContent = "");
   const aircraft = aircraftGroups[group][model];
   if (!aircraft) return (infoEl.textContent = "");
-//  infoEl.innerHTML = `✈️ Взлётная дистанция: ${aircraft.takeoff} м<br>📏 Дальность: ${aircraft.range} км`;
+  // Можно показать краткую справку тут, если нужно
 }
 
 // Сделать initMap глобальной
 window.initMap = function () {
-  const airportCenter = { lat: 32.8145, lng: 35.0432 };
+  const airportCenter = { lat: 32.8145, lng: 35.0432 }; // Аэропорт Хайфы
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
     zoom: 12,
-    mapTypeId: "roadmap", // ⬅ по умолчанию карта, а не спутник
+    mapTypeId: "roadmap",
     mapTypeControl: true,
     mapTypeControlOptions: {
       style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
@@ -179,7 +174,7 @@ window.initMap = function () {
     });
   });
 
-  // Обновление значений рядом с ползунками
+  // Ползунки температуры и ветра
   document.getElementById("tempSlider").addEventListener("input", (e) => {
     document.getElementById("tempVal").textContent = `${e.target.value}°C`;
   });

@@ -21,6 +21,12 @@ function updateAircraftInfo(group, model) {
 function updateResult() {
   const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
+
+  if (!group || !ac || !aircraftGroups[group] || !aircraftGroups[group][ac]) {
+    console.warn("Некорректный выбор:", { group, ac });
+    return;
+  }
+
   const data = aircraftGroups[group][ac];
   if (!data) return;
 

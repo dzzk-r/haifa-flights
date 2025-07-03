@@ -29,4 +29,4 @@ export const aircraftGroups = {
   }
 };
 
-window.aircraftData = aircraftData;
+window.aircraftData = aircraftGroups;

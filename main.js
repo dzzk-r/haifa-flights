@@ -3,7 +3,6 @@ import { drawRangeCircle, getMap } from './map.js';
 import { initUI } from './ui.js';
 import { getRunwayLength } from './utils.js';
 import { initMap } from './map.js';
-window.initMap = initMap;
 
 function updateAircraftInfo(group, model) {
   const infoEl = document.getElementById("aircraftInfo");
@@ -55,7 +54,3 @@ function updateResult() {
 document.addEventListener("DOMContentLoaded", () => {
   initUI(updateResult, updateAircraftInfo);
 });
-
-window.initMap = () => {
-  initMap();
-};

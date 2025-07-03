@@ -187,3 +187,69 @@ window.initMap = function () {
     updateResult();
   });
 };
+
+function debugMapState() {
+  console.log("===== Google Map Debug Info v2 =====");
+
+  const center = map.getCenter().toJSON();
+  console.log("📍 Центр карты:", center);
+
+  const zoom = map.getZoom();
+  console.log("🔍 Zoom:", zoom);
+
+  const bounds = map.getBounds();
+  if (bounds) {
+    console.log("🗺️ Bounds:", {
+      northEast: bounds.getNorthEast().toJSON(),
+      southWest: bounds.getSouthWest().toJSON()
+    });
+  } else {
+    console.warn("⚠️ Bounds пока не определены (возможно, карта ещё не инициализировалась полностью)");
+  }
+
+  const mapEl = document.getElementById("map");
+  if (mapEl) {
+    const rect = mapEl.getBoundingClientRect();
+    console.log("📐 DOM-элемент карты:", {
+      width: rect.width + "px",
+      height: rect.height + "px"
+    });
+  } else {
+    console.warn("❌ DOM-элемент #map не найден");
+  }
+
+  if (typeof rangeCircle !== "undefined" && rangeCircle) {
+    const circleCenter = rangeCircle.getCenter().toJSON();
+    const radiusKm = rangeCircle.getRadius() / 1000;
+    console.log("⭕ Circle center:", circleCenter);
+    console.log("📏 Circle radius:", radiusKm + " км");
+  } else {
+    console.warn("⚠️ rangeCircle не определён или не установлен");
+  }
+
+  try {
+    const selectedGroup = document.getElementById("categorySelect").value;
+    const selectedAircraft = document.getElementById("aircraftSelect").value;
+    const temp = document.getElementById("tempSlider").value;
+    const wind = document.getElementById("windSlider").value;
+    const load = document.getElementById("loadSelect").value;
+    const runwayRadio = document.querySelector('input[name="runway"]:checked');
+    const customRunwayVal = document.getElementById("customRunway").value;
+
+    const runwayLength = runwayRadio?.value === "custom"
+      ? parseInt(customRunwayVal, 10)
+      : parseInt(runwayRadio?.value, 10);
+
+    console.log("🛩️ Самолёт:", selectedGroup + " → " + selectedAircraft);
+    console.log("🌡️ Температура:", temp + "°C");
+    console.log("💨 Ветер:", wind + " км/ч");
+    console.log("📦 Загрузка:", load);
+    console.log("🛬 Длина полосы:", isNaN(runwayLength) ? "не указана" : (runwayLength + " м"));
+  } catch (e) {
+    console.error("❌ Ошибка при чтении параметров UI:", e);
+  }
+}
+
+window.debugMapState = debugMapState;
+
+console.info("ℹ️ Для отладки карты введите в консоли: debugMapState()");

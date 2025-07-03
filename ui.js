@@ -54,3 +54,8 @@ export function initUI(updateResult, updateAircraftInfo) {
     updateResult();
   }
 }
+
+// Авто-вызов при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+  populateAircraftSelects();
+});

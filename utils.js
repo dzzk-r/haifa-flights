@@ -77,8 +77,7 @@ export function populateAircraftSelects() {
     }
   });
 }
-
-// Авто-вызов при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-  populateAircraftSelects();
-});
+// // Авто-вызов при загрузке
+// document.addEventListener('DOMContentLoaded', () => {
+//   populateAircraftSelects();
+// });

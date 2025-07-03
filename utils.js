@@ -62,8 +62,8 @@ export function populateAircraftSelects() {
   }
 
   groupSelect.innerHTML = "";
-  for (const group in aircraftData) {
-    if (!aircraftData[group]) continue;
+  for (const group in aircraftGroups) {
+    if (!aircraftGroups[group]) continue;
     const option = document.createElement("option");
     option.value = group;
     option.textContent = group;

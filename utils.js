@@ -1,3 +1,5 @@
+import { aircraftData } from './aircraft-data.js';
+
 export function getRunwayLength() {
   const selected = document.querySelector('input[name="runway"]:checked').value;
   if (selected === "custom") {
@@ -48,7 +50,8 @@ export function logMapDebug(map, rangeCircle, aircraftName, weather, loading, ru
   if (runwayLength) console.log("🛬 Длина полосы:", runwayLength + " м");
 }
 
-import { aircraftData } from './aircraft-data.js';
+window.logMapDebug = logMapDebug;
+
 
 export function populateAircraftSelects() {
   const groupSelect = document.getElementById("aircraft-group-select");

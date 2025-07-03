@@ -57,4 +57,19 @@ export function getMap() {
   return map;
 }
 
-window.initMap = initMap;
+// window.initMap = initMap;
+if (typeof window !== "undefined") {
+  window.addEventListener("load", () => {
+    // ждем, пока google.maps загрузится
+    if (window.google && google.maps) {
+      initMap();
+    } else {
+      const interval = setInterval(() => {
+        if (window.google && google.maps) {
+          clearInterval(interval);
+          initMap();
+        }
+      }, 100);
+    }
+  });
+}

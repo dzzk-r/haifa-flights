@@ -28,3 +28,5 @@ export const aircraftGroups = {
     "Viking DHC-6 Twin Otter":{ takeoff: 366,  range: 1400,  capacity: 19, cruise: 338 }
   }
 };
+
+window.aircraftData = aircraftData;

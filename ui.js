@@ -58,5 +58,10 @@ export function initUI(updateResult, updateAircraftInfo) {
 
 // Авто-вызов при загрузке
 document.addEventListener('DOMContentLoaded', () => {
-  populateAircraftSelects();
+  // Убедимся, что данные самолётов уже загружены
+  if (window.aircraftData) {
+    populateAircraftSelects();
+  } else {
+    console.error('✈️ aircraftData не загружены в момент populateAircraftSelects');
+  }
 });

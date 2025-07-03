@@ -77,10 +77,16 @@ function updateResult() {
   const delta = Math.round(takeoffFinal - runwayLength);
 
   const resEl = document.getElementById("result");
+  const imageName = model.replace(/\s+/g, "_").replace(/[()]/g, "") + ".jpg";
+
 
   resEl.innerHTML = `
     <strong>${ac}</strong><br>
+    <img src="img/${imageName}" alt="${model}" style="max-width: 100%; max-height: 120px;"><br>
+    <br>
+
     👥 Вместимость: ${capacity || "?"} чел<br>
+    <br>
     ✈️ Взлётная дистанция: ${Math.round(takeoffFinal)} м<br>
     📏 Дальность: ${rangeFinal} км<br>
     🚀 Крейсерская скорость: ${cruise || "?"} км/ч<br><br>

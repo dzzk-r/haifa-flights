@@ -56,26 +56,46 @@ export function populateAircraftSelects() {
   const groupSelect = document.getElementById("categorySelect");
   const modelSelect = document.getElementById("aircraftSelect");
 
-  // populate group select
+  if (!groupSelect || !modelSelect) {
+    console.error("categorySelect или aircraftSelect не найдены в DOM.");
+    return;
+  }
+
+  groupSelect.innerHTML = "";
   for (const group in aircraftData) {
+    if (!aircraftData[group]) continue;
     const option = document.createElement("option");
     option.value = group;
     option.textContent = group;
     groupSelect.appendChild(option);
   }
 
-  // handle group selection change
-  groupSelect.addEventListener("change", () => {
+  const updateModelOptions = () => {
     const selectedGroup = groupSelect.value;
+    const models = aircraftData[selectedGroup];
+
     modelSelect.innerHTML = "";
-    for (const model in aircraftData[selectedGroup]) {
+    if (!models) return;
+
+    for (const model in models) {
       const option = document.createElement("option");
       option.value = model;
       option.textContent = model;
       modelSelect.appendChild(option);
     }
-  });
+
+    // Вызываем updateResult сразу после заполнения
+    if (modelSelect.value) {
+      updateResult();  // или твоя функция пересчёта
+    }
+  };
+
+  groupSelect.addEventListener("change", updateModelOptions);
+  modelSelect.addEventListener("change", updateResult);
+
+  updateModelOptions(); // первичная инициализация
 }
+
 // // Авто-вызов при загрузке
 document.addEventListener('DOMContentLoaded', () => {
   populateAircraftSelects();

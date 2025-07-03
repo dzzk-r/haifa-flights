@@ -1,5 +1,6 @@
 import { aircraftGroups } from './aircraftData.js';
 import { drawRangeCircle } from './map.js';
+import { populateAircraftSelects } from './utils.js';
 
 export function initUI(updateResult, updateAircraftInfo) {
   const categorySelect = document.getElementById("categorySelect");

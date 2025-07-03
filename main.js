@@ -1,7 +1,8 @@
 import { aircraftGroups } from './aircraftData.js';
-import { drawRangeCircle, initMap, getMap } from './map.js';
+import { drawRangeCircle, getMap } from './map.js';
 import { initUI } from './ui.js';
 import { getRunwayLength } from './utils.js';
+import { initMap } from './map.js';
 window.initMap = initMap;
 
 function updateAircraftInfo(group, model) {

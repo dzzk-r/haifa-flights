@@ -125,6 +125,17 @@ window.initMap = function () {
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
     zoom: 12,
+    minZoom: 5,
+    maxZoom: 16,
+    restriction: {
+      latLngBounds: {
+        north: 37.5,
+        south: 29.3,
+        west: 33.0,
+        east: 36.5
+      },
+      strictBounds: false
+    },
     mapTypeId: "roadmap",
     mapTypeControl: true,
     mapTypeControlOptions: {

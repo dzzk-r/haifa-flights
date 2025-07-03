@@ -3,6 +3,14 @@ import { drawRangeCircle, getMap } from './map.js';
 import { initUI } from './ui.js';
 import { getRunwayLength } from './utils.js';
 import { initMap } from './map.js';
+import './map.js';
+import './ui.js';
+import './runway.js';
+// import { initMap } from './map.js';
+// import './ui.js';
+// import './runway.js';
+
+// window.initMap = initMap;
 
 function updateAircraftInfo(group, model) {
   const infoEl = document.getElementById("aircraftInfo");

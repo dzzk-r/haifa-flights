@@ -24,6 +24,8 @@ export function initMap() {
     }
   });
 
+  console.log('%c🛠️ Введите logMapDebug(...) в консоли для отладки карты', 'color: green; font-weight: bold;');
+
   return map;
 }
 

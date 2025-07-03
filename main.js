@@ -54,3 +54,17 @@ function updateResult() {
 document.addEventListener("DOMContentLoaded", () => {
   initUI(updateResult, updateAircraftInfo);
 });
+
+
+window.initMap = initMap;
+
+// Дождись, пока Google Maps загрузится, затем вызови initMap
+window.addEventListener('load', () => {
+  if (typeof google !== 'undefined' && google.maps) {
+    initMap();
+  } else {
+    console.warn("❌ Google Maps API не загрузился");
+  }
+});
+
+window.logMapDebug = logMapDebug;

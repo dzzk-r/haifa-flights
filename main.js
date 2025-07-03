@@ -81,7 +81,7 @@ function updateResult() {
 
   resEl.innerHTML = `
     <strong>${ac}</strong><br>
-    <img src="img/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;"><br>
+    <img src="img/aircraft/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;"><br>
     <br>
 
     👥 Вместимость: ${capacity || "?"} чел<br>

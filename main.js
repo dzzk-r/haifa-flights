@@ -125,9 +125,10 @@ function updateAircraftInfo(group, model) {
 // Сделать initMap глобальной
 window.initMap = function () {
   const airportCenter = { lat: 32.8145, lng: 35.0432 };
+  const zoomLevel = 13; // или 12–14 в зависимости от желаемой детализации
   map = new google.maps.Map(document.getElementById("map"), {
     center: airportCenter,
-    zoom: 12,
+    zoom: zoomLevel,
     mapTypeId: "roadmap", // ⬅ по умолчанию карта, а не спутник
     mapTypeControl: true,
     mapTypeControlOptions: {

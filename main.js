@@ -106,8 +106,9 @@ function drawRangeCircle(rangeKm, canOperateNow) {
     map
   });
 
-  if (rangeKm > 2000 && map.getZoom() < 10) {
-    map.fitBounds(rangeCircle.getBounds());
+  if (rangeKm <= 3000 && map.getZoom() < 10) {
+    const bounds = rangeCircle.getBounds();
+    if (bounds) map.fitBounds(bounds);
   }
 }
 

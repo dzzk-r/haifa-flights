@@ -79,4 +79,6 @@ export function populateAircraftSelects() {
 }
 
 // Авто-вызов при загрузке
-populateAircraftSelects();
+document.addEventListener('DOMContentLoaded', () => {
+  populateAircraftSelects();
+});

@@ -53,10 +53,9 @@ export function logMapDebug(map, rangeCircle, aircraftName, weather, loading, ru
 window.logMapDebug = logMapDebug;
 
 export function populateAircraftSelects() {
-    const groupSelect = document.getElementById("aircraft-group-select");
-    const modelSelect = document.getElementById("aircraft-model-select");
-    const categorySelect = document.getElementById("categorySelect");
-  
+  const groupSelect = document.getElementById("categorySelect");
+  const modelSelect = document.getElementById("aircraftSelect");
+
   // populate group select
   for (const group in aircraftData) {
     const option = document.createElement("option");

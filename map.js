@@ -1,3 +1,4 @@
+import { drawRunway } from './runway.js';
 let map, rangeCircle;
 
 export function initMap() {
@@ -26,6 +27,8 @@ export function initMap() {
 
   console.log('%c🛠️ Введите logMapDebug(...) в консоли для отладки карты', 'color: green; font-weight: bold;');
 
+  drawRunway(map); // ← возвращаем полосу
+  window.map = map; // если нужно для дебага
   return map;
 }
 

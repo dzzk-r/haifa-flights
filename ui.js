@@ -64,4 +64,15 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     console.error('✈️ aircraftData не загружены в момент populateAircraftSelects');
   }
+
+
+  const toggleBtn = document.getElementById("togglePanelBtn");
+  const panel = document.querySelector(".control-panel");
+
+  toggleBtn.addEventListener("click", () => {
+    panel.classList.toggle("collapsed");
+
+    // Изменить текст на кнопке в зависимости от состояния
+    toggleBtn.textContent = panel.classList.contains("collapsed") ? "⛶ Показать панель" : "⛶ Скрыть панель";
+  });
 });

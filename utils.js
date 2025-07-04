@@ -98,7 +98,7 @@ export function populateAircraftSelects() {
   updateModelOptions(); // первичная инициализация
 }
 
-// Авто-вызов при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-  populateAircraftSelects ? populateAircraftSelects(): null;
-});
+// // Авто-вызов при загрузке
+// document.addEventListener('DOMContentLoaded', () => {
+//   populateAircraftSelects ? populateAircraftSelects(): null;
+// });

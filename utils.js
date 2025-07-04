@@ -1,5 +1,6 @@
 import * as aircraftData from './aircraftData.js';
 import { aircraftGroups } from './aircraftData.js';
+import { updateResult } from './main.js';
 
 export function getRunwayLength() {
   const selected = document.querySelector('input[name="runway"]:checked').value;

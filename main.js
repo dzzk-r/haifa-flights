@@ -18,7 +18,7 @@ function updateAircraftInfo(group, model) {
   if (!aircraft) return (infoEl.textContent = "");
 }
 
-function updateResult() {
+export function updateResult() {
   const group = document.getElementById("categorySelect").value;
   const ac = document.getElementById("aircraftSelect").value;
 

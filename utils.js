@@ -98,5 +98,5 @@ export function populateAircraftSelects() {
 
 // // Авто-вызов при загрузке
 document.addEventListener('DOMContentLoaded', () => {
-  populateAircraftSelects();
+  populateAircraftSelects ? populateAircraftSelects(): null;
 });

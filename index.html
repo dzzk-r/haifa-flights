@@ -21,14 +21,6 @@
     <label for="aircraftSelect">Самолёт:</label>
     <select id="aircraftSelect"></select>
 
-    <!-- Дополнительные input-ы: runway, temp, wind, etc. -->
-    <label for="tempSlider">Температура (°C):</label>
-    <input type="range" id="tempSlider" min="0" max="50" value="15">
-    <span id="tempVal">15</span>
-
-    <label for="windSlider">Ветер (узлы):</label>
-    <input type="range" id="windSlider" min="-20" max="20" value="0">
-    <span id="windVal">0</span>
 
     <label for="loadSelect">Загрузка:</label>
     <select id="loadSelect">
@@ -44,13 +36,17 @@
     <input type="radio" name="runway" value="custom"> Своя:
     <input type="number" id="customRunway" value="2000" disabled> м
 
-    <div id="aircraftInfo"></div>
-
-    <div id="aircraftImageContainer">
-      <img id="aircraftImage" src="" alt="Aircraft" />
-    </div>
-  
     <div id="result"></div>
+  
+    <!-- Дополнительные input-ы: runway, temp, wind, etc. -->
+    <label for="tempSlider">Температура (°C):</label>
+    <input type="range" id="tempSlider" min="0" max="50" value="15">
+    <span id="tempVal">15</span>
+
+    <label for="windSlider">Ветер (узлы):</label>
+    <input type="range" id="windSlider" min="-20" max="20" value="0">
+    <span id="windVal">0</span>
+
   </div>
 
   <script

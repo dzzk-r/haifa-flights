@@ -1,4 +1,5 @@
 import * as aircraftData from './aircraftData.js';
+import { aircraftGroups } from './aircraftData.js';
 
 export function getRunwayLength() {
   const selected = document.querySelector('input[name="runway"]:checked').value;
@@ -96,7 +97,7 @@ export function populateAircraftSelects() {
   updateModelOptions(); // первичная инициализация
 }
 
-// // Авто-вызов при загрузке
+// Авто-вызов при загрузке
 document.addEventListener('DOMContentLoaded', () => {
   populateAircraftSelects ? populateAircraftSelects(): null;
 });

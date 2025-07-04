@@ -49,7 +49,7 @@ export function updateResult() {
 
   resEl.innerHTML = `
     <strong>${ac}</strong><br>
-    <img src="img/aircraft/${imageName}" alt="${ac}" style="max-width: 100%; max-height: 120px;">
+    <img src="img/aircraft/${imageName}" alt="${ac}" style="max-width: 100%">
     <br><br>
     👥 Вместимость: ${capacity || "?"} чел<br><br>
     ✈️ Взлётная дистанция: ${Math.round(takeoffFinal)} м<br>
